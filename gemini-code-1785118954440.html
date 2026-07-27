@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>উপবৃত্তির আবেদন ফরম (SAF)</title>
+<style>
+  :root {
+    --ink: #152238;
+    --navy: #1B3A5C;
+    --navy-deep: #0F2540;
+    --gold: #C9962B;
+    --gold-soft: #E8C57A;
+    --paper: #F7F4EC;
+    --paper-line: #E4DDC8;
+    --white: #FFFFFF;
+    --green: #2E6B4F;
+    --red: #B3462C;
+    --shadow: 0 4px 6px rgba(15, 37, 64, 0.1);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Sans Bengali", "Hind Siliguri", "Kalpurush", "Segoe UI", sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    background: linear-gradient(135deg, var(--navy-deep), var(--navy));
+    color: var(--white);
+    padding: 20px 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-bottom: 3px solid var(--gold);
+    box-shadow: var(--shadow);
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .seal {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: var(--navy-deep); font-size: 20px;
+    flex-shrink: 0;
+    font-family: Georgia, serif;
+  }
+  .brand h1 { font-size: 1.1rem; margin: 0; font-weight: 700; letter-spacing: .3px; }
+  .brand p { margin: 2px 0 0; font-size: .75rem; color: var(--gold-soft); }
+  nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  nav button {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .25);
+    color: var(--white);
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: .85rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+  nav button:hover, nav button:focus { background: rgba(255, 255, 255, .1); outline: none; }
+  nav button.active { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); font-weight: 700; }
+
+  main { max-width: 940px; margin: 0 auto; padding: 36px 6vw 80px; }
+
+  .page { display: none; animation: fadeIn 0.4s ease forwards; }
+  .page.active-page { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* HOME */
+  .hero {
+    background: var(--white);
+    border: 1px solid var(--paper-line);
+    border-left: 6px solid var(--gold);
+    border-radius: 8px;
+    padding: 36px 32px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+  }
+  .hero .eyebrow { color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; font-size: .75rem; font-weight: 700; margin-bottom: 10px; }
+  .hero h2 { font-size: 1.5rem; margin: 0 0 12px; color: var(--navy-deep); font-family: Georgia, serif; line-height: 1.3; }
+  .hero p { color: #444; margin: 0 0 20px; font-size: 0.95rem; }
+  
+  .cta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--navy); color: var(--white); padding: 13px 26px;
+    border-radius: 6px; text-decoration: none; font-weight: 700; cursor: pointer; border: none;
+    font-size: 1rem; font-family: inherit; transition: all 0.2s ease;
+  }
+  .cta:hover:not(:disabled) { background: var(--navy-deep); transform: translateY(-1px); }
+  .cta:active:not(:disabled) { transform: translateY(0); }
+  .cta:disabled { opacity: .6; cursor: not-allowed; }
+  .cta.ghost { background: transparent; color: var(--navy); border: 2px solid var(--navy); padding: 11px 24px; }
+  .cta.ghost:hover:not(:disabled) { background: var(--navy); color: var(--white); }
+
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
+  .info-card { background: var(--white); border: 1px solid var(--paper-line); border-radius: 8px; padding: 20px; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+  .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .info-card .num { color: var(--gold); font-family: Georgia, serif; font-size: 1.4rem; font-weight: 700; }
+  .info-card h3 { margin: 6px 0 6px; font-size: 1rem; color: var(--navy-deep); }
+  .info-card p { margin: 0; font-size: .88rem; color: #555; }
+
+  /* NID GATE */
+  .gate-card { max-width: 460px; margin: 40px auto; background: var(--white); border: 1px solid var(--paper-line); border-radius: 8px; padding: 32px; box-shadow: var(--shadow); }
+  .gate-card h2 { margin-top: 0; color: var(--navy-deep); font-family: Georgia, serif; font-size: 1.3rem; }
+  .gate-card p { color: #555; font-size: .9rem; margin-bottom: 20px; }
+
+  /* FORM WIZARD */
+  .form-card { background: var(--white); border: 1px solid var(--paper-line); border-radius: 8px; padding: 32px; box-shadow: var(--shadow); }
+  .form-card h2 { margin-top: 0; color: var(--navy-deep); font-family: Georgia, serif; font-size: 1.3rem; margin-bottom: 24px;}
+
+  .progress-wrap { margin-bottom: 26px; }
+  .progress-track { height: 8px; background: var(--paper-line); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); transition: width .4s cubic-bezier(0.4, 0, 0.2, 1); }
+  .progress-steps { display: flex; justify-content: space-between; margin-top: 8px; font-size: .72rem; color: #888; flex-wrap: wrap; gap: 4px; }
+  .progress-steps span { transition: color 0.3s; }
+  .progress-steps span.active { color: var(--navy); font-weight: 700; }
+
+  fieldset { border: none; padding: 0; margin: 0; }
+  legend {
+    color: var(--navy); font-weight: 700; font-size: 1.05rem; padding-bottom: 8px; margin-bottom: 18px;
+    border-bottom: 2px solid var(--paper-line); width: 100%; display: block;
+  }
+  .sub-legend { color: var(--gold); font-weight: 700; font-size: .85rem; margin: 22px 0 10px; text-transform: uppercase; letter-spacing: .5px; }
+  
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px; }
+  .row3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px; }
+  
+  label { display: block; font-size: .85rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+  label .req { color: var(--red); margin-left: 2px; }
+  
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea {
+    width: 100%; padding: 10px 12px; border: 1px solid #CBC3A8; border-radius: 6px;
+    font-family: inherit; font-size: .93rem; background: var(--paper); color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus, select:focus, textarea:focus { 
+    outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201, 150, 43, 0.15); 
+  }
+  input:disabled, select:disabled { opacity: .65; background: #e9e5d9; cursor: not-allowed; }
+  textarea { resize: vertical; min-height: 70px; }
+  
+  .full { grid-column: 1 / -1; }
+  
+  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .checkbox-row input { width: 18px; height: 18px; accent-color: var(--navy); cursor: pointer; }
+  .checkbox-row label { margin: 0; font-weight: 500; cursor: pointer; }
+  
+  .doc-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+  .doc-item { display: flex; align-items: center; gap: 12px; background: var(--paper); border: 1px solid var(--paper-line); padding: 12px 14px; border-radius: 6px; flex-wrap: wrap; }
+  .doc-item input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--navy); cursor: pointer; }
+  .doc-item span { flex: 1; font-size: .9rem; font-weight: 500;}
+  .doc-item input[type=file] { max-width: 240px; font-size: .8rem; }
+  
+  .radio-group { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 12px; }
+  .radio-group label { display: flex; align-items: center; gap: 6px; font-weight: 500; cursor: pointer;}
+  .radio-group input { width: 16px; height: 16px; accent-color: var(--navy); cursor: pointer;}
+  
+  .wizard-nav { display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--paper-line); }
+  .note { font-size: .8rem; color: #666; margin-top: 8px; line-height: 1.4; }
+  
+  .alert-box { display: none; padding: 16px 20px; border-radius: 8px; margin-bottom: 20px; font-size: .92rem; line-height: 1.5; border-width: 1px; border-style: solid; }
+  .alert-box.show { display: block; animation: fadeIn 0.3s; }
+  .alert-success { background: #EAF4EE; border-color: var(--green); color: #1E4B36; }
+  .alert-warn { background: #FBF0E4; border-color: var(--gold); color: #6b4f16; }
+  .alert-info { background: #EDF1F5; border-color: #C3D0DE; color: var(--navy-deep); }
+  .alert-error { background: #FCE8E8; border-color: var(--red); color: #8C2B16; }
+
+  /* ADMIN */
+  .admin-login { max-width: 380px; margin: 60px auto; background: var(--white); border: 1px solid var(--paper-line); border-radius: 8px; padding: 32px; box-shadow: var(--shadow); }
+  .admin-login h2 { margin-top: 0; color: var(--navy-deep); font-family: Georgia, serif; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
+  .toolbar h2 { margin: 0; color: var(--navy-deep); font-family: Georgia, serif; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  
+  .btn-sm { background: var(--navy); color: var(--white); border: none; padding: 9px 16px; border-radius: 6px; cursor: pointer; font-size: .85rem; font-family: inherit; font-weight: 600; transition: 0.2s;}
+  .btn-sm:hover { background: var(--navy-deep); }
+  .btn-sm.secondary { background: transparent; color: var(--navy); border: 1px solid var(--navy); }
+  .btn-sm.secondary:hover { background: var(--navy); color: var(--white); }
+  .btn-sm.danger { background: transparent; color: var(--red); border: 1px solid var(--red); }
+  .btn-sm.danger:hover { background: var(--red); color: var(--white); }
+  
+  table { width: 100%; border-collapse: collapse; background: var(--white); font-size: .85rem; }
+  th, td { padding: 12px 10px; border-bottom: 1px solid var(--paper-line); text-align: left; white-space: nowrap; }
+  th { background: var(--navy); color: var(--white); position: sticky; top: 0; z-index: 10; font-weight: 600;}
+  tbody tr { transition: background 0.15s; }
+  tbody tr:hover { background: var(--paper); }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--paper-line); border-radius: 8px; max-height: 70vh; box-shadow: var(--shadow); background: var(--white);}
+  .empty-state { text-align: center; padding: 60px 20px; color: #777; background: var(--white); border: 1px solid var(--paper-line); border-radius: 8px;}
+  .count-pill { background: var(--gold); color: var(--navy-deep); padding: 4px 12px; border-radius: 20px; font-size: .8rem; font-weight: 700; vertical-align: middle; margin-left: 8px;}
+  
+  .action-btns { display: flex; gap: 6px; }
+  .action-btn { border: none; padding: 6px 10px; border-radius: 4px; font-size: .75rem; font-weight: 600; cursor: pointer; color: #fff; transition: opacity 0.2s; }
+  .action-btn:hover { opacity: 0.85; }
+  .action-btn.view { background: #1B3A5C; }
+  .action-btn.edit { background: #C9962B; color: #0F2540; }
+  .action-btn.del { background: #B3462C; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 37, 64, .7); z-index: 50; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+  .modal-overlay.show { display: flex; opacity: 1; }
+  .modal-box { background: #fff; border-radius: 8px; max-width: 650px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 30px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transform: scale(0.95); transition: transform 0.3s ease;}
+  .modal-overlay.show .modal-box { transform: scale(1); }
+  .modal-box h3 { margin-top: 0; color: var(--navy-deep); font-family: Georgia, serif; font-size: 1.4rem; padding-bottom: 12px; border-bottom: 2px solid var(--paper-line); margin-bottom: 20px;}
+  .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width: 500px){ .modal-grid { grid-template-columns: 1fr; } }
+  .modal-item { margin-bottom: 8px; }
+  .modal-item dt { font-weight: 700; font-size: .78rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; }
+  .modal-item dd { margin: 4px 0 0; font-size: .95rem; color: var(--ink); font-weight: 500; word-break: break-word;}
+  .modal-close { position: absolute; top: 20px; right: 20px; background: #f0f0f0; border: none; font-size: 1.2rem; cursor: pointer; color: #555; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s;}
+  .modal-close:hover { background: #e0e0e0; color: var(--red); }
+  .doc-links { grid-column: 1 / -1; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--paper-line); }
+  .doc-link-item { display: inline-block; margin: 4px 8px 4px 0; font-size: 0.85rem; color: var(--navy); text-decoration: none; background: var(--paper); padding: 6px 12px; border-radius: 4px; border: 1px solid var(--paper-line); transition: border-color 0.2s;}
+  .doc-link-item:hover { border-color: var(--navy); }
+
+  footer { text-align: center; padding: 30px 20px; font-size: .85rem; color: #777; margin-top: 40px; border-top: 1px solid var(--paper-line);}
+
+  /* Loading Spinner */
+  .loader { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid var(--white); width: 18px; height: 18px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="seal">ব</div>
+    <div>
+      <h1>উপবৃত্তি আবেদন পোর্টাল (SAF)</h1>
+      <p>কারিগরি শিক্ষা প্রতিষ্ঠান — শিক্ষাবর্ষ ২০২৬</p>
+    </div>
+  </div>
+  <nav id="mainNav">
+    <button class="nav-btn active" data-page="home">হোম</button>
+    <button class="nav-btn" data-page="gate">আবেদন করুন</button>
+    <button class="nav-btn" data-page="admin">অ্যাডমিন</button>
+  </nav>
+</header>
+
+<main>
+  <!-- HOME PAGE -->
+  <section id="page-home" class="page active-page">
+    <div class="hero">
+      <div class="eyebrow">উপবৃত্তির জন্য আবেদন ফরম</div>
+      <h2>কারিগরি শিক্ষা প্রতিষ্ঠানে উপবৃত্তি বিতরণ ও শিক্ষা উপকরণ ক্রয় সহায়তা কার্যক্রম</h2>
+      <p>এই পোর্টালের মাধ্যমে শিক্ষার্থীরা নিজের NID (বা অভিভাবকের NID) ব্যবহার করে লগইন করে সরাসরি অনলাইনে উপবৃত্তির আবেদন ফরম (SAF) পূরণ করতে পারবে। ফরমটি ধাপে ধাপে সাজানো, তাই পূরণ করা সহজ।</p>
+      <button class="cta" id="btnStartApp">আবেদন শুরু করুন →</button>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="num">০১</div>
+        <h3>NID দিয়ে প্রবেশ করুন</h3>
+        <p>আপনার NID নম্বর দিয়ে প্রবেশ করুন। একই NID দিয়ে দ্বিতীয়বার আবেদন করা যাবে না।</p>
+      </div>
+      <div class="info-card">
+        <div class="num">০২</div>
+        <h3>ধাপে ধাপে ফরম পূরণ</h3>
+        <p>শিক্ষার্থীর তথ্য, ঠিকানা, শিক্ষাগত তথ্য, আর্থিক তথ্য ও সংযুক্তি — মোট ৫টি ধাপ।</p>
+      </div>
+      <div class="info-card">
+        <div class="num">০৩</div>
+        <h3>জমা ও যাচাই</h3>
+        <p>জমা দেওয়ার পর প্রতিষ্ঠান কর্তৃপক্ষ সব তথ্য যাচাই করে পরবর্তী পদক্ষেপ জানাবে।</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NID GATE PAGE -->
+  <section id="page-gate" class="page">
+    <div class="gate-card">
+      <h2>লগইন — NID নম্বর দিন</h2>
+      <p>আবেদনকারী শিক্ষার্থীর নিজের NID থাকলে তা দিন, না থাকলে অভিভাবকের NID নম্বর দিন। এই নম্বর দিয়েই পরবর্তীতে আপনার আবেদন খুঁজে পাওয়া যাবে।</p>
+      <label for="gateNid">NID নম্বর (১০, ১৩ বা ১৭ ডিজিট) <span class="req">*</span></label>
+      <input type="text" id="gateNid" placeholder="যেমনঃ 1234567890" inputmode="numeric" autocomplete="off">
+      <p class="note" id="gateMsg"></p>
+      <br>
+      <button class="cta" id="btnEnterNid">প্রবেশ করুন →</button>
+    </div>
+  </section>
+
+  <!-- ALREADY SUBMITTED VIEW -->
+  <section id="page-already" class="page">
+    <div class="form-card">
+      <h2>আপনার আবেদন ইতিমধ্যে জমা হয়েছে</h2>
+      <div class="alert-box alert-info show">এই NID নম্বর দিয়ে আগেই একটি আবেদন জমা দেওয়া হয়েছে। একই NID দিয়ে একাধিকবার আবেদন করা যাবে না। নিচে আপনার জমাকৃত তথ্য দেখানো হলো।</div>
+      <div class="modal-grid" id="alreadyDetails" style="margin-bottom: 24px;"></div>
+      <button class="cta ghost" id="btnBackHomeFromAlready">হোমে ফিরে যান</button>
+    </div>
+  </section>
+
+  <!-- FORM PAGE (WIZARD) -->
+  <section id="page-form" class="page">
+    <div class="form-card">
+      <h2 id="formTitle">উপবৃত্তির জন্য আবেদন ফরম (SAF)</h2>
+      
+      <div class="alert-box alert-success" id="successBox">✓ আপনার আবেদন সফলভাবে জমা হয়েছে। ধন্যবাদ!</div>
+      <div class="alert-box alert-error" id="errorBox"></div>
+
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:20%;"></div></div>
+        <div class="progress-steps" id="progressSteps">
+          <span class="active" data-step="1">১. শিক্ষার্থী ও পরিবার</span>
+          <span data-step="2">২. ঠিকানা</span>
+          <span data-step="3">৩. শিক্ষাগত তথ্য</span>
+          <span data-step="4">৪. আর্থিক তথ্য</span>
+          <span data-step="5">৫. সংযুক্তি ও অঙ্গীকার</span>
+        </div>
+      </div>
+
+      <form id="scholarshipForm" novalidate>
+        <!-- STEP 1 -->
+        <div class="step active-step" data-step="1">
+          <fieldset>
+            <legend>প্রতিষ্ঠানের তথ্য</legend>
+            <div class="row3">
+              <div><label>প্রতিষ্ঠানের নাম <span class="req">*</span></label><input type="text" name="instName" required></div>
+              <div><label>EIIN <span class="req">*</span></label><input type="text" name="eiin" required></div>
+              <div><label>BTEB Code</label><input type="text" name="btebCode"></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>১.১ আবেদনকারী শিক্ষার্থীর তথ্য</legend>
+            <div class="row">
+              <div><label>আবেদনকারীর নাম <span class="req">*</span></label><input type="text" name="studentName" required></div>
+              <div><label>লিঙ্গ <span class="req">*</span></label>
+                <select name="gender" required><option value="">নির্বাচন করুন</option><option value="ছেলে">ছেলে</option><option value="মেয়ে">মেয়ে</option><option value="অন্যান্য">অন্যান্য</option></select>
+              </div>
+            </div>
+            <div class="row">
+              <div><label>জন্ম নিবন্ধন নং <span class="req">*</span></label><input type="text" name="brn" required inputmode="numeric"></div>
+              <div><label>জন্ম তারিখ <span class="req">*</span></label><input type="date" name="dob" required></div>
+            </div>
+
+            <div class="sub-legend">পিতার তথ্য</div>
+            <div class="row">
+              <div><label>পিতার নাম <span class="req">*</span></label><input type="text" name="fatherName" required></div>
+              <div><label>পিতার NID নং <span class="req">*</span></label><input type="text" name="fatherNid" required inputmode="numeric"></div>
+            </div>
+            <div class="row">
+              <div><label>পিতার জন্ম তারিখ</label><input type="date" name="fatherDob"></div>
+              <div><label>পিতার মোবাইল নং</label><input type="tel" name="fatherMobile" placeholder="01XXXXXXXXX" inputmode="numeric"></div>
+            </div>
+
+            <div class="sub-legend">মাতার তথ্য</div>
+            <div class="row">
+              <div><label>মাতার নাম <span class="req">*</span></label><input type="text" name="motherName" required></div>
+              <div><label>মাতার NID নং <span class="req">*</span></label><input type="text" name="motherNid" required inputmode="numeric"></div>
+            </div>
+            <div class="row">
+              <div><label>মাতার জন্ম তারিখ</label><input type="date" name="motherDob"></div>
+              <div><label>মাতার মোবাইল নং</label><input type="tel" name="motherMobile" placeholder="01XXXXXXXXX" inputmode="numeric"></div>
+            </div>
+
+            <div class="sub-legend">অভিভাবকের তথ্য (প্রযোজ্য ক্ষেত্রে)</div>
+            <div class="row">
+              <div><label>অভিভাবকের নাম</label><input type="text" name="guardianName"></div>
+              <div><label>অভিভাবকের NID নং</label><input type="text" name="guardianNid" inputmode="numeric"></div>
+            </div>
+            <div class="row">
+              <div><label>অভিভাবকের জন্ম তারিখ</label><input type="date" name="guardianDob"></div>
+              <div><label>অভিভাবকের মোবাইল নং</label><input type="tel" name="guardianMobile" placeholder="01XXXXXXXXX" inputmode="numeric"></div>
+            </div>
+            <div class="row">
+              <div><label>অভিভাবক ও শিক্ষার্থীর সম্পর্ক</label><input type="text" name="guardianRelation"></div>
+              <div><label>অ্যাকাউন্টের NID নং</label><input type="text" name="accountNid" inputmode="numeric"></div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step" data-step="2" style="display:none;">
+          <fieldset>
+            <legend>১.২ শিক্ষার্থীর স্থায়ী ঠিকানা</legend>
+            <div class="row3">
+              <div><label>বিভাগ <span class="req">*</span></label><input type="text" name="permDivision" required></div>
+              <div><label>জেলা <span class="req">*</span></label><input type="text" name="permDistrict" required></div>
+              <div><label>উপজেলা/থানা <span class="req">*</span></label><input type="text" name="permUpazila" required></div>
+            </div>
+            <div class="row3">
+              <div><label>পৌরসভা/ইউনিয়ন/সিটি কর্পোরেশন</label><input type="text" name="permUnion"></div>
+              <div><label>ওয়ার্ড</label><input type="text" name="permWard"></div>
+              <div><label>ডাকঘর</label><input type="text" name="permPostOffice"></div>
+            </div>
+            <div class="row">
+              <div class="full"><label>গ্রাম</label><input type="text" name="permVillage"></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>১.৩ শিক্ষার্থীর বর্তমান ঠিকানা</legend>
+            <div class="checkbox-row">
+              <input type="checkbox" id="sameAddress">
+              <label for="sameAddress">স্থায়ী ঠিকানার মতোই</label>
+            </div>
+            <div class="row3">
+              <div><label>বিভাগ <span class="req">*</span></label><input type="text" name="currDivision" required></div>
+              <div><label>জেলা <span class="req">*</span></label><input type="text" name="currDistrict" required></div>
+              <div><label>উপজেলা/থানা <span class="req">*</span></label><input type="text" name="currUpazila" required></div>
+            </div>
+            <div class="row3">
+              <div><label>পৌরসভা/ইউনিয়ন/সিটি কর্পোরেশন</label><input type="text" name="currUnion"></div>
+              <div><label>ওয়ার্ড</label><input type="text" name="currWard"></div>
+              <div><label>ডাকঘর</label><input type="text" name="currPostOffice"></div>
+            </div>
+            <div class="row">
+              <div class="full"><label>গ্রাম</label><input type="text" name="currVillage"></div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step" data-step="3" style="display:none;">
+          <fieldset>
+            <legend>১.৪ পূর্ববর্তী শ্রেণির শিক্ষাগত তথ্য</legend>
+            <p class="note">যে প্রতিষ্ঠান হতে ভর্তি/বদলি হয়েছেন (৬ষ্ঠ, নবম, একাদশ ও ডিপ্লোমা ১ম পর্বের ক্ষেত্রে যে প্রতিষ্ঠান হতে জেএসসি/এসএসসি পাশ করেছেন)।</p>
+            <div class="row3">
+              <div><label>বিভাগ</label><input type="text" name="prevDivision"></div>
+              <div><label>জেলা</label><input type="text" name="prevDistrict"></div>
+              <div><label>উপজেলা/থানা</label><input type="text" name="prevUpazila"></div>
+            </div>
+            <div class="row">
+              <div><label>পৌরসভা/ইউনিয়ন/সিটি কর্পোরেশন</label><input type="text" name="prevUnion"></div>
+              <div><label>টেকনোলজি/ট্রেড</label><input type="text" name="prevTechnology"></div>
+            </div>
+            <div class="row3">
+              <div><label>পাশের বছর</label><input type="text" name="prevPassYear" inputmode="numeric"></div>
+              <div><label>পরীক্ষার নাম</label><input type="text" name="prevExamName"></div>
+              <div><label>রোল নং/রেজি. নং</label><input type="text" name="prevRoll"></div>
+            </div>
+            <div class="row3">
+              <div><label>বোর্ড</label><input type="text" name="prevBoard"></div>
+              <div><label>ফলাফল / প্রাপ্ত নম্বর-জিপিএ</label><input type="text" name="prevResult"></div>
+              <div><label>হাজিরা (শতকরা)</label><input type="text" name="prevAttendance"></div>
+            </div>
+            <div class="row">
+              <div><label>অনুমোদিত ক্লাস সংখ্যা</label><input type="number" name="prevApprovedClasses"></div>
+              <div><label>উপস্থিত ক্লাসের সংখ্যা</label><input type="number" name="prevAttendedClasses"></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>১.৫ বর্তমান শ্রেণির শিক্ষাগত তথ্য</legend>
+            <div class="row">
+              <div><label>টেকনোলজি/ট্রেড <span class="req">*</span></label><input type="text" name="currTechnology" required></div>
+              <div><label>পর্ব/শ্রেণি <span class="req">*</span></label><input type="text" name="currClass" required></div>
+            </div>
+            <div class="row">
+              <div><label>শিফট এবং গ্রুপ</label><input type="text" name="shiftGroup"></div>
+              <div><label>ক্লাস রোল <span class="req">*</span></label><input type="text" name="classRoll" required></div>
+            </div>
+            <div class="row3">
+              <div><label>জেলা</label><input type="text" name="currInstDistrict"></div>
+              <div><label>উপজেলা</label><input type="text" name="currInstUpazila"></div>
+              <div><label>পৌরসভা/ইউনিয়ন/সিটি কর্পোঃ</label><input type="text" name="currInstUnion"></div>
+            </div>
+            <div class="sub-legend">বর্তমান পর্ব/শ্রেণির ফলাফল সংক্রান্ত তথ্য</div>
+            <div class="row">
+              <div><label>পর্ব/শ্রেণি ও উপবৃত্তি সাইকেল</label><input type="text" name="cycleInfo"></div>
+              <div><label>হাজিরা (শতকরা)</label><input type="number" name="currAttendance" min="0" max="100"></div>
+            </div>
+            <div class="row">
+              <div><label>অনুমোদিত ক্লাস সংখ্যা</label><input type="number" name="currApprovedClasses"></div>
+              <div><label>উপস্থিত ক্লাসের সংখ্যা</label><input type="number" name="currAttendedClasses"></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>১.৬ পূর্বে উপবৃত্তি প্রাপ্তির তথ্য</legend>
+            <label>আবেদনকারী পূর্বে যে প্রতিষ্ঠানে অধ্যয়নরত ছিলো, সে প্রতিষ্ঠান হতে কারিগরি উপবৃত্তি পেতো কিনা?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="prevStipend" value="হ্যাঁ"> হ্যাঁ</label>
+              <label><input type="radio" name="prevStipend" value="না" checked> না</label>
+            </div>
+            <div id="prevStipendDetails" style="display:none; margin-top: 15px;">
+              <div class="row">
+                <div><label>প্রতিষ্ঠানের নাম</label><input type="text" name="prevStipendInst"></div>
+                <div><label>MIS ID No</label><input type="text" name="misId"></div>
+              </div>
+              <div class="row">
+                <div><label>EIIN No</label><input type="text" name="prevStipendEiin"></div>
+                <div><label>প্রতিষ্ঠান প্রধানের মোবাইল নং</label><input type="tel" name="prevHeadMobile" placeholder="01XXXXXXXXX" inputmode="numeric"></div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step" data-step="4" style="display:none;">
+          <fieldset>
+            <legend>১.৭ বিশেষ তথ্য</legend>
+            <div class="row">
+              <div><label>পড়াশোনার খরচ বহন করবে কে? <span class="req">*</span></label>
+                <select name="costBearer" required><option value="">নির্বাচন করুন</option><option value="বাবা">বাবা</option><option value="মা">মা</option><option value="অভিভাবক">অভিভাবক</option></select>
+              </div>
+              <div><label>আবেদনকারী কি অন্য কোন উৎস হতে উপবৃত্তি পান?</label>
+                <select name="otherStipend"><option value="না">না</option><option value="হ্যাঁ">হ্যাঁ</option></select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="full"><label>আবেদনকারীর কি কোন শারীরিক প্রতিবন্ধকতা আছে?</label>
+                <select name="disability"><option value="না">না</option><option value="হ্যাঁ">হ্যাঁ</option></select>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>২.০ পিতা/মাতার আয় সংক্রান্ত তথ্য</legend>
+            <div class="row">
+              <div><label>পিতা/মাতা কোন ধরনের পেশায় নিয়োজিত <span class="req">*</span></label>
+                <select name="occupation" required>
+                  <option value="">নির্বাচন করুন</option>
+                  <option value="সরকারি চাকুরি">সরকারি চাকুরি</option>
+                  <option value="বেসরকারি চাকুরি">বেসরকারি চাকুরি</option>
+                  <option value="ব্যবসা">ব্যবসা</option>
+                  <option value="কৃষিকাজ">কৃষিকাজ</option>
+                  <option value="প্রবাসী">প্রবাসী</option>
+                  <option value="দিন মজুর">দিন মজুর</option>
+                  <option value="অন্যান্য">অন্যান্য</option>
+                </select>
+              </div>
+              <div><label>মাসিক আয়ের পরিমাণ (টাকা) <span class="req">*</span></label><input type="number" name="monthlyIncome" required min="0"></div>
+            </div>
+            <p class="note">সরকারি চাকুরিজীবি হলে iBAS++ এর বেতনের প্রমাণক, বেসরকারি চাকুরিজীবি হলে প্রতিষ্ঠান প্রধানের সনদ, অন্যথায় ওয়ার্ড/ইউনিয়ন কাউন্সিলর অফিসের সনদ জমা দিতে হবে.</p>
+          </fieldset>
+
+          <fieldset>
+            <legend>১.৯ হিসাব নং সংক্রান্ত তথ্য</legend>
+            <div class="sub-legend">ব্যাংক হিসাব (থাকলে)</div>
+            <div class="row">
+              <div><label>ব্যাংকের নাম</label><input type="text" name="bankName"></div>
+              <div><label>শাখার নাম</label><input type="text" name="branchName"></div>
+            </div>
+            <div class="row">
+              <div><label>রাউটিং নম্বার</label><input type="text" name="routingNo" inputmode="numeric"></div>
+              <div><label>হিসাবের শিরোনাম</label><input type="text" name="accountTitle"></div>
+            </div>
+            <div class="row">
+              <div><label>হিসাবের ধরণ</label><input type="text" name="accountType"></div>
+              <div><label>হিসাব নং</label><input type="text" name="accountNo" inputmode="numeric"></div>
+            </div>
+
+            <div class="sub-legend">মোবাইল ব্যাংকিং তথ্য <span class="req">*</span></div>
+            <div class="row">
+              <div><label>মোবাইল ব্যাংকিং অপারেটরের নাম</label>
+                <select name="mfsOperator" required><option value="">নির্বাচন করুন</option><option value="বিকাশ">বিকাশ</option><option value="নগদ">নগদ</option><option value="রকেট">রকেট</option><option value="উপায়">উপায়</option><option value="অন্যান্য">অন্যান্য</option></select>
+              </div>
+              <div><label>যে নামে অ্যাকাউন্ট <span class="req">*</span></label><input type="text" name="mfsAccountName" required></div>
+            </div>
+            <div class="row">
+              <div><label>যে NID দিয়ে অ্যাকাউন্ট খোলা <span class="req">*</span></label><input type="text" name="mfsNid" required inputmode="numeric"></div>
+              <div><label>অ্যাকাউন্টধারীর সাথে সম্পর্ক <span class="req">*</span></label><input type="text" name="mfsRelation" required></div>
+            </div>
+            <div class="row">
+              <div class="full"><label>অ্যাকাউন্ট হিসাব নং (মোবাইল নম্বর) <span class="req">*</span></label><input type="tel" name="mfsNumber" required placeholder="01XXXXXXXXX" inputmode="numeric"></div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step" data-step="5" style="display:none;">
+          <fieldset>
+            <legend>১.৮ সংযুক্তি (সংশ্লিষ্ট সনদ বা প্রয়োজনীয় সনদ)</legend>
+            <p class="note">প্রতিটি সনদ আপলোড করুন অথবা "সংযুক্ত আছে" মার্ক করুন। মূল কপি প্রতিষ্ঠানে জমা দিতে হবে। (সর্বোচ্চ সাইজ: ২ মেগাবাইট)</p>
+            <div class="doc-list">
+              <div class="doc-item"><input type="checkbox" name="doc_brn" id="doc_brn"><label for="doc_brn">১. জন্ম নিবন্ধন সনদ</label><input type="file" name="file_brn" accept="image/*,.pdf"></div>
+              <div class="doc-item"><input type="checkbox" name="doc_fatherNid" id="doc_fatherNid"><label for="doc_fatherNid">২. পিতার NID</label><input type="file" name="file_fatherNid" accept="image/*,.pdf"></div>
+              <div class="doc-item"><input type="checkbox" name="doc_motherNid" id="doc_motherNid"><label for="doc_motherNid">৩. মাতার NID</label><input type="file" name="file_motherNid" accept="image/*,.pdf"></div>
+              <div class="doc-item"><input type="checkbox" name="doc_guardianNid" id="doc_guardianNid"><label for="doc_guardianNid">৪. অভিভাবকের NID</label><input type="file" name="file_guardianNid" accept="image/*,.pdf"></div>
+              <div class="doc-item"><input type="checkbox" name="doc_income" id="doc_income"><label for="doc_income">৫. আয়ের সনদ</label><input type="file" name="file_income" accept="image/*,.pdf"></div>
+              <div class="doc-item"><input type="checkbox" name="doc_marksheet" id="doc_marksheet"><label for="doc_marksheet">৬. পাশ সংক্রান্ত মার্কশিট</label><input type="file" name="file_marksheet" accept="image/*,.pdf"></div>
+              <div class="doc-item"><input type="checkbox" name="doc_attendance" id="doc_attendance"><label for="doc_attendance">৭. হাজিরা সংক্রান্ত সনদ</label><input type="file" name="file_attendance" accept="image/*,.pdf"></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>২.১ আবেদনকারীর অঙ্গীকারনামা</legend>
+            <div class="alert-box alert-warn show">
+              আমি এই মর্মে অঙ্গীকার করছি, আমি যে তথ্য এই আবেদনে উল্লেখ করেছি তা সঠিক আছে এবং আমার দ্বারা পূরণ করা হয়েছে। এছাড়া কোনো ডকুমেন্ট অনলাইন ভেরিফিকেশনে ব্যর্থ হলে শিক্ষা প্রতিষ্ঠান কর্তৃপক্ষ দায়ী থাকবে না।
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="agreeDeclaration" required>
+              <label for="agreeDeclaration">আমি উপরের অঙ্গীকারনামা পড়েছি এবং সম্মত আছি <span class="req">*</span></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="wizard-nav">
+          <button type="button" class="cta ghost" id="btnBack" style="visibility:hidden;">← পূর্ববর্তী</button>
+          <button type="button" class="cta" id="btnNext">পরবর্তী →</button>
+          <button type="submit" class="cta" id="btnSubmit" style="display:none;">আবেদন জমা দিন ✓</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ADMIN PAGE -->
+  <section id="page-admin" class="page">
+    <div class="admin-login" id="adminLoginView">
+      <h2>অ্যাডমিন লগইন</h2>
+      <label for="adminPass">পাসওয়ার্ড</label>
+      <input type="password" id="adminPass" placeholder="পাসওয়ার্ড দিন">
+      <p class="note" id="loginError" style="color:var(--red); display:none; margin-top: 8px; font-weight: 600;">ভুল পাসওয়ার্ড, আবার চেষ্টা করুন।</p>
+      <br>
+      <button class="cta" id="btnLogin">লগইন করুন</button>
+    </div>
+
+    <div id="adminPanelView" style="display:none;">
+      <div class="toolbar">
+        <h2>জমাকৃত আবেদনসমূহ <span class="count-pill" id="countPill">0</span></h2>
+        <div class="btn-row">
+          <button class="btn-sm secondary" id="btnExportCSV">CSV ডাউনলোড</button>
+          <button class="btn-sm secondary" id="btnPrint">প্রিন্ট</button>
+        </div>
+      </div>
+      <input type="text" id="studentSearch" placeholder="নাম, রোল বা NID দিয়ে খুঁজুন..." style="margin-bottom:18px; padding:12px 14px; width:100%; border-radius: 6px; border: 1px solid var(--paper-line); font-size: 0.95rem; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+      
+      <div class="table-wrap">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th>#</th><th>NID</th><th>নাম</th><th>পর্ব/শ্রেণি</th><th>টেকনোলজি</th>
+              <th>ক্লাস রোল</th><th>মোবাইল</th><th>জমার সময়</th><th>অ্যাকশন</th>
+            </tr>
+          </thead>
+          <tbody id="dataBody"></tbody>
+        </table>
+      </div>
+      <div id="emptyState" class="empty-state" style="display:none;">এখনো কোনো আবেদন জমা পড়েনি।</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- VIEW DETAILS MODAL -->
+<div class="modal-overlay" id="viewModal">
+  <div class="modal-box">
+    <button class="modal-close" id="btnModalClose">✕</button>
+    <h3>আবেদনের বিস্তারিত তথ্য</h3>
+    <div class="modal-grid" id="modalDetails"></div>
+    <div class="doc-links" id="modalDocLinks"></div>
+  </div>
+</div>
+
+<footer>উপবৃত্তি আবেদন পোর্টাল — কারিগরি শিক্ষা প্রতিষ্ঠান © ২০২৬</footer>
+
+<!-- Firebase Modular SDK Integration -->
+<script type="module">
+  // Core Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+  // ACTUAL FIREBASE CONFIGURATION REPLACED HERE
+  const firebaseConfig = {
+    apiKey: "AIzaSyC_ku4jTPcRqcIPFCu1WuKqpVwUbBzovhs",
+    authDomain: "scholarship-portal-2b11n.firebaseapp.com",
+    projectId: "scholarship-portal-2b11n",
+    storageBucket: "scholarship-portal-2b11n.firebasestorage.app",
+    messagingSenderId: "699096637426",
+    appId: "1:699096637426:web:25cad7592ccfa82f6d956b",
+    measurementId: "G-8D9XGX436S"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+  
+  const COLLECTION_NAME = "scholarship_applications";
+  
+  // Hashed admin password logic to avoid plaintext strings. Default: 'admin123'
+  // SHA-256 Hash of 'admin123'
+  const ADMIN_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+
+  let currentNid = null;
+  let currentStep = 1;
+  const TOTAL_STEPS = 5;
+  let globalDataCache = [];
+  let isEditMode = false;
+
+  // DOM Elements
+  const navButtons = document.querySelectorAll('.nav-btn');
+  const pages = document.querySelectorAll('.page');
+  const scholarshipForm = document.getElementById('scholarshipForm');
+  const errorBox = document.getElementById('errorBox');
+  const successBox = document.getElementById('successBox');
+
+  // Navigation Logic
+  function navigateTo(pageId) {
+    pages.forEach(p => p.classList.remove('active-page'));
+    const target = document.getElementById('page-' + pageId);
+    if (target) target.classList.add('active-page');
+    
+    navButtons.forEach(b => b.classList.toggle('active', b.dataset.page === pageId));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    if (pageId === 'admin' && document.getElementById('adminPanelView').style.display === 'block') {
+      loadAdminTable();
+    }
+  }
+
+  navButtons.forEach(btn => btn.addEventListener('click', () => navigateTo(btn.dataset.page)));
+  document.getElementById('btnStartApp').addEventListener('click', () => navigateTo('gate'));
+  document.getElementById('btnBackHomeFromAlready').addEventListener('click', () => navigateTo('home'));
+
+  // Utility: Validation
+  function validateNID(nid) {
+    const regex = /^(\d{10}|\d{13}|\d{17})$/;
+    return regex.test(nid);
+  }
+  function validateMobile(mobile) {
+    const regex = /^01[3-9]\d{8}$/;
+    return regex.test(mobile);
+  }
+
+  // NID Gate Logic
+  document.getElementById('btnEnterNid').addEventListener('click', async () => {
+    const nidInput = document.getElementById('gateNid').value.trim();
+    const msg = document.getElementById('gateMsg');
+    
+    if (!validateNID(nidInput)) {
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'সঠিক NID নম্বর দিন (১০, ১৩ বা ১৭ ডিজিট)।';
+      return;
+    }
+    
+    msg.style.color = 'var(--navy)';
+    msg.textContent = 'ডেটা যাচাই করা হচ্ছে...';
+    document.getElementById('btnEnterNid').disabled = true;
+    
+    try {
+      const docSnap = await getDoc(doc(db, COLLECTION_NAME, nidInput));
+      if (docSnap.exists()) {
+        showAlreadySubmitted(docSnap.data());
+      } else {
+        startNewApplication(nidInput);
+      }
+    } catch (e) {
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'সার্ভার সংযোগে সমস্যা, পরে আবার চেষ্টা করুন।';
+      console.error(e);
+    } finally {
+      document.getElementById('btnEnterNid').disabled = false;
+    }
+  });
+
+  function showAlreadySubmitted(record) {
+    const container = document.getElementById('alreadyDetails');
+    container.innerHTML = '';
+    const fields = [
+      { key: 'studentName', label: 'আবেদনকারীর নাম' },
+      { key: 'fatherName', label: 'পিতার নাম' },
+      { key: 'motherName', label: 'মাতার নাম' },
+      { key: 'currClass', label: 'পর্ব/শ্রেণি' },
+      { key: 'currTechnology', label: 'টেকনোলজি' },
+      { key: 'classRoll', label: 'ক্লাস রোল' },
+      { key: 'mfsNumber', label: 'মোবাইল ব্যাংকিং নম্বর' },
+      { key: 'submittedAt', label: 'জমার সময়' }
+    ];
+    
+    fields.forEach(f => {
+      const div = document.createElement('div');
+      div.className = 'modal-item';
+      div.innerHTML = `<dt>${f.label}</dt><dd>${sanitizeHTML(record[f.key]) || '—'}</dd>`;
+      container.appendChild(div);
+    });
+    navigateTo('already');
+  }
+
+  function startNewApplication(nid) {
+    currentNid = nid;
+    isEditMode = false;
+    scholarshipForm.reset();
+    document.getElementById('formTitle').textContent = "উপবৃত্তির জন্য আবেদন ফরম (SAF)";
+    currentStep = 1;
+    updateStepView();
+    navigateTo('form');
+  }
+
+  // Address Copy Logic
+  document.getElementById('sameAddress').addEventListener('change', (e) => {
+    const map = {
+      permDivision: 'currDivision', permDistrict: 'currDistrict', permUpazila: 'currUpazila',
+      permUnion: 'currUnion', permWard: 'currWard', permPostOffice: 'currPostOffice', permVillage: 'currVillage'
+    };
+    for (const src in map) {
+      const targetEl = scholarshipForm.elements[map[src]];
+      const srcEl = scholarshipForm.elements[src];
+      if(targetEl && srcEl) {
+        targetEl.value = e.target.checked ? srcEl.value : "";
+        targetEl.readOnly = e.target.checked;
+        if(e.target.checked) targetEl.style.backgroundColor = "#e9e5d9";
+        else targetEl.style.backgroundColor = "var(--paper)";
+      }
+    }
+  });
+
+  // Previous Stipend Radio Logic
+  document.querySelectorAll('input[name="prevStipend"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      document.getElementById('prevStipendDetails').style.display = (e.target.value === 'হ্যাঁ') ? 'block' : 'none';
+    });
+  });
+
+  // Wizard Steps Logic
+  function updateStepView() {
+    document.querySelectorAll('.step').forEach(s => {
+      s.style.display = (parseInt(s.dataset.step) === currentStep) ? 'block' : 'none';
+    });
+    document.querySelectorAll('#progressSteps span').forEach(s => {
+      s.classList.toggle('active', parseInt(s.dataset.step) <= currentStep);
+    });
+    document.getElementById('progressFill').style.width = ((currentStep) / TOTAL_STEPS * 100) + '%';
+    
+    document.getElementById('btnBack').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+    document.getElementById('btnNext').style.display = currentStep === TOTAL_STEPS ? 'none' : 'inline-flex';
+    document.getElementById('btnSubmit').style.display = currentStep === TOTAL_STEPS ? 'inline-flex' : 'none';
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    errorBox.classList.remove('show');
+  }
+
+  document.getElementById('btnNext').addEventListener('click', () => {
+    if (currentStep < TOTAL_STEPS) { currentStep++; updateStepView(); }
+  });
+  document.getElementById('btnBack').addEventListener('click', () => {
+    if (currentStep > 1) { currentStep--; updateStepView(); }
+  });
+
+  // Form Submission & Validation
+  function validateCurrentForm() {
+    const missing = [];
+    let invalidFormat = [];
+    
+    const requiredFields = document.querySelectorAll('#scholarshipForm [required]:not(:disabled):not([readonly])');
+    requiredFields.forEach(el => {
+      if (el.type === 'checkbox') {
+        if (!el.checked && el.id !== 'agreeDeclaration') missing.push(el.nextElementSibling?.innerText || el.name);
+      } else if (!el.value.trim()) {
+        const label = el.closest('div')?.querySelector('label');
+        if(label) missing.push(label.innerText.replace("*", "").trim());
+      }
+    });
+
+    // Custom format validation
+    const fatherNid = scholarshipForm.elements['fatherNid'].value.trim();
+    if(fatherNid && !validateNID(fatherNid)) invalidFormat.push("পিতার NID (১০/১৩/১৭ ডিজিট)");
+    
+    const motherNid = scholarshipForm.elements['motherNid'].value.trim();
+    if(motherNid && !validateNID(motherNid)) invalidFormat.push("মাতার NID (১০/১৩/১৭ ডিজিট)");
+
+    const mfsNumber = scholarshipForm.elements['mfsNumber'].value.trim();
+    if(mfsNumber && !validateMobile(mfsNumber)) invalidFormat.push("মোবাইল ব্যাংকিং নম্বর (সঠিক ১১ ডিজিট)");
+
+    return { missing, invalidFormat };
+  }
+
+  scholarshipForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorBox.classList.remove('show');
+
+    const validation = validateCurrentForm();
+    if (validation.missing.length > 0 || validation.invalidFormat.length > 0) {
+      let errHtml = "<b>ত্রুটি পাওয়া গেছে:</b><br>";
+      if(validation.missing.length > 0) errHtml += "অসম্পূর্ণ তথ্য: " + validation.missing.join(", ") + "<br>";
+      if(validation.invalidFormat.length > 0) errHtml += "ভুল ফরম্যাট: " + validation.invalidFormat.join(", ");
+      
+      errorBox.innerHTML = errHtml;
+      errorBox.classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (!document.getElementById('agreeDeclaration').checked) {
+      errorBox.innerHTML = "আপনাকে অবশ্যই অঙ্গীকারনামায় সম্মত হতে হবে।";
+      errorBox.classList.add('show');
+      return;
+    }
+
+    const btnSubmit = document.getElementById('btnSubmit');
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = `<span class="loader"></span> সেভ হচ্ছে...`;
+
+    try {
+      const formData = new FormData(scholarshipForm);
+      const record = {};
+      const fileUploadPromises = [];
+      const fileUrls = {};
+
+      for (const [key, value] of formData.entries()) {
+        if (value instanceof File && value.size > 0) {
+          // Firebase Storage Upload logic
+          const fileExt = value.name.split('.').pop();
+          const fileName = `${key}_${currentNid}_${Date.now()}.${fileExt}`;
+          const storageRefObj = ref(storage, `applications/${currentNid}/${fileName}`);
+          
+          const uploadTask = uploadBytes(storageRefObj, value).then(async (snapshot) => {
+            const downloadUrl = await getDownloadURL(snapshot.ref);
+            fileUrls[key] = downloadUrl;
+          });
+          fileUploadPromises.push(uploadTask);
+        } else if (!(value instanceof File)) {
+          record[key] = value;
+        }
+      }
+
+      // Wait for all files to upload
+      if(fileUploadPromises.length > 0) {
+         await Promise.all(fileUploadPromises);
+      }
+      
+      // Merge File URLs into record
+      Object.assign(record, fileUrls);
+      
+      record.nid = currentNid;
+      if (!isEditMode) record.submittedAt = new Date().toLocaleString('bn-BD');
+      record.updatedAt = new Date().toLocaleString('bn-BD');
+
+      // Save to Firestore (Merge to not overwrite existing un-edited file URLs)
+      await setDoc(doc(db, COLLECTION_NAME, currentNid), record, { merge: true });
+      
+      successBox.classList.add('show');
+      setTimeout(() => {
+        successBox.classList.remove('show');
+        scholarshipForm.reset();
+        navigateTo('home');
+      }, 2500);
+
+    } catch (error) {
+      console.error("Storage/Firestore Error: ", error);
+      errorBox.innerHTML = "ডেটা সেভ করতে সমস্যা হয়েছে। ইন্টারনেট সংযোগ চেক করুন।";
+      errorBox.classList.add('show');
+    } finally {
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = "আবেদন জমা দিন ✓";
+    }
+  });
+
+  // Crypto Utility for Admin Password Hash
+  async function hashString(str) {
+    const msgBuffer = new TextEncoder().encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // Admin Section Logic
+  document.getElementById('btnLogin').addEventListener('click', async () => {
+    const inputPass = document.getElementById('adminPass').value;
+    const errorEl = document.getElementById('loginError');
+    const inputHash = await hashString(inputPass);
+    
+    if (inputHash === ADMIN_HASH) {
+      document.getElementById('adminLoginView').style.display = 'none';
+      document.getElementById('adminPanelView').style.display = 'block';
+      document.getElementById('adminPass').value = '';
+      errorEl.style.display = 'none';
+      await loadAdminTable();
+    } else {
+      errorEl.style.display = 'block';
+    }
+  });
+  
+  document.getElementById('adminPass').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('btnLogin').click();
+  });
+
+  // Utility to prevent XSS in table rendering
+  function sanitizeHTML(str) {
+    if(str === null || str === undefined) return '';
+    const temp = document.createElement('div');
+    temp.textContent = str;
+    return temp.innerHTML;
+  }
+
+  async function loadAdminTable() {
+    const body = document.getElementById('dataBody');
+    const empty = document.getElementById('emptyState');
+    const table = document.getElementById('dataTable');
+    
+    body.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:30px;"><span class="loader" style="border-color:var(--navy); border-top-color:transparent;"></span> ডেটা লোড হচ্ছে...</td></tr>';
+    
+    try {
+      const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+      globalDataCache = [];
+      querySnapshot.forEach((doc) => globalDataCache.push(doc.data()));
+
+      document.getElementById('countPill').textContent = globalDataCache.length;
+      body.innerHTML = '';
+      
+      if (globalDataCache.length === 0) {
+        table.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+      }
+      
+      table.style.display = 'table';
+      empty.style.display = 'none';
+      
+      globalDataCache.forEach((r, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td>${sanitizeHTML(r.nid)}</td>
+          <td>${sanitizeHTML(r.studentName)}</td>
+          <td>${sanitizeHTML(r.currClass)}</td>
+          <td>${sanitizeHTML(r.currTechnology)}</td>
+          <td>${sanitizeHTML(r.classRoll)}</td>
+          <td>${sanitizeHTML(r.mfsNumber)}</td>
+          <td>${sanitizeHTML(r.submittedAt)}</td>
+          <td class="action-btns">
+            <button class="action-btn view" data-id="${sanitizeHTML(r.nid)}">দেখুন</button>
+            <button class="action-btn edit" data-id="${sanitizeHTML(r.nid)}">এডিট</button>
+            <button class="action-btn del" data-id="${sanitizeHTML(r.nid)}">ডিলিট</button>
+          </td>`;
+        body.appendChild(tr);
+      });
+
+      // Bind dynamic buttons
+      document.querySelectorAll('.action-btn.view').forEach(b => b.addEventListener('click', (e) => openModal(e.target.dataset.id)));
+      document.querySelectorAll('.action-btn.edit').forEach(b => b.addEventListener('click', (e) => editRecord(e.target.dataset.id)));
+      document.querySelectorAll('.action-btn.del').forEach(b => b.addEventListener('click', (e) => deleteRecord(e.target.dataset.id)));
+
+    } catch (e) {
+      console.error(e);
+      body.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--red);">ডেটা লোড করতে সমস্যা হয়েছে। ফায়ারবেস কনফিগারেশন চেক করুন।</td></tr>';
+    }
+  }
+
+  // Edit Flow
+  function editRecord(nid) {
+    const record = globalDataCache.find(r => r.nid === nid);
+    if (!record) return;
+    
+    currentNid = nid;
+    isEditMode = true;
+    document.getElementById('formTitle').textContent = `আবেদন এডিট করুন (NID: ${nid})`;
+    scholarshipForm.reset();
+    
+    Object.keys(record).forEach(key => {
+      const elList = scholarshipForm.elements[key];
+      if (!elList) return;
+      
+      // NodeList (Radios) vs Single Element
+      if (elList.length && elList[0] && elList[0].type === 'radio') {
+        Array.from(elList).forEach(radio => {
+          if (radio.value === record[key]) radio.checked = true;
+        });
+      } else if (elList.type === 'checkbox') {
+        elList.checked = (record[key] === 'on' || record[key] === true);
+      } else if (elList.type !== 'file') {
+        elList.value = record[key];
+      }
+    });
+    
+    document.getElementById('agreeDeclaration').checked = true;
+    currentStep = 1;
+    updateStepView();
+    navigateTo('form');
+  }
+
+  // Delete Flow
+  async function deleteRecord(nid) {
+    if (confirm(`আপনি কি নিশ্চিত NID: ${nid} এর আবেদনটি মুছে ফেলতে চান? এই অ্যাকশনটি বাতিল করা যাবে না।`)) {
+      try {
+        await deleteDoc(doc(db, COLLECTION_NAME, nid));
+        await loadAdminTable();
+      } catch (error) {
+        console.error("Error removing document: ", error);
+        alert("ডিলিট করতে সমস্যা হয়েছে!");
+      }
+    }
+  }
+
+  // Modal View Logic
+  function openModal(nid) {
+    const r = globalDataCache.find(r => r.nid === nid);
+    if (!r) return;
+    
+    const container = document.getElementById('modalDetails');
+    const linksContainer = document.getElementById('modalDocLinks');
+    container.innerHTML = '';
+    linksContainer.innerHTML = '';
+    
+    const excludeKeys = ['nid', 'updatedAt'];
+    let hasFiles = false;
+
+    for (const key in r) {
+      if(excludeKeys.includes(key)) continue;
+      
+      // Check if it's a File URL from Storage
+      if (typeof r[key] === 'string' && r[key].startsWith('http') && r[key].includes('firebasestorage')) {
+        hasFiles = true;
+        const a = document.createElement('a');
+        a.href = r[key];
+        a.target = "_blank";
+        a.className = "doc-link-item";
+        a.textContent = `📄 ${key.replace('file_','')}`;
+        linksContainer.appendChild(a);
+      } else {
+        const div = document.createElement('div');
+        div.className = 'modal-item';
+        div.innerHTML = `<dt>${key}</dt><dd>${sanitizeHTML(r[key]) || '—'}</dd>`;
+        container.appendChild(div);
+      }
+    }
+    
+    if(hasFiles) linksContainer.style.display = 'block';
+    else linksContainer.style.display = 'none';
+
+    document.getElementById('viewModal').classList.add('show');
+  }
+  
+  document.getElementById('btnModalClose').addEventListener('click', () => {
+    document.getElementById('viewModal').classList.remove('show');
+  });
+
+  // Search/Filter Logic
+  document.getElementById('studentSearch').addEventListener('keyup', (e) => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll("#dataBody tr").forEach(tr => {
+      tr.style.display = tr.textContent.toLowerCase().includes(q) ? "" : "none";
+    });
+  });
+
+  // Robust CSV Export
+  document.getElementById('btnExportCSV').addEventListener('click', () => {
+    if (globalDataCache.length === 0) { alert('ডাউনলোড করার মত কোনো ডেটা নেই।'); return; }
+    
+    const headers = Array.from(new Set(globalDataCache.flatMap(Object.keys)));
+    let csvContent = headers.join(',') + '\n';
+    
+    globalDataCache.forEach(r => {
+      const row = headers.map(header => {
+        let val = r[header];
+        if (val === null || val === undefined) val = '';
+        val = String(val).replace(/"/g, '""'); // Escape inner quotes
+        return `"${val}"`;
+      });
+      csvContent += row.join(',') + '\n';
+    });
+    
+    // Add BOM for UTF-8 Excel compatibility
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; 
+    a.download = `SAF_Applications_${new Date().toISOString().split('T')[0]}.csv`; 
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // Print Logic
+  document.getElementById('btnPrint').addEventListener('click', () => window.print());
+
+</script>
+
+</body>
+</html>
